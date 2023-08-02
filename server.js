@@ -25,23 +25,6 @@ app.get('/meetings', meetingsRoute)
 var channels = {}
 var sockets = {}
 
-function part(channel, socket) {
-    console.log("["+ socket.id + "] part ");
-
-    if (!(channel in socket.channels)) {
-        console.log("["+ socket.id + "] ERROR: not in ", channel);
-        return;
-    }
-
-    delete socket.channels[channel];
-    delete channels[channel][socket.id];
-
-    for (id in channels[channel]) {
-        channels[channel][id].emit('removePeer', {'peer_id': socket.id});
-        socket.emit('removePeer', {'peer_id': id});
-    }
-}
-
 io.on('connection', (socket) => {
     socket.channels = {}
     sockets[socket.id] = socket
@@ -126,4 +109,19 @@ io.on('connection', (socket) => {
     })
 })
 
-module.exports = app
+function part(channel, socket) {
+    console.log("["+ socket.id + "] part ");
+
+    if (!(channel in socket.channels)) {
+        console.log("["+ socket.id + "] ERROR: not in ", channel);
+        return;
+    }
+
+    delete socket.channels[channel];
+    delete channels[channel][socket.id];
+
+    for (id in channels[channel]) {
+        channels[channel][id].emit('removePeer', {'peer_id': socket.id});
+        socket.emit('removePeer', {'peer_id': id});
+    }
+}
