@@ -1,6 +1,6 @@
 # Título do projeto
 
-Sistema de videoconferência em tempo real com ferramentas de interação colaboratividade e mensageria. Desenvolvido como tema de trabalho de conclusão de curso
+Este repositorio representa um sistema de sinalizacao e mensageria que compõe uma aplicação de videoconferência em tempo real com ferramentas de interação colaboratividade e mensageria. Desenvolvido como tema de trabalho de conclusão de curso
 
 ### 📋 Pré-requisitos
 
