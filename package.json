@@ -1,0 +1,24 @@
+{
+  "name": "meetings-signaling-server",
+  "version": "1.0.0",
+  "author": "Gabriel Diniz",
+  "description": "Sistema de videoconferência em tempo real com ferramentas de interação colaboratividade e mensageria. Desenvolvido como tema de trabalho de conclusão de curso",
+  "main": "server.js",
+   "engines": {
+    "node": ">=16.14.0",
+    "npm": ">=8.3.1"
+  },
+  "dependencies": {
+    "axios": "^1.3.3",
+    "core-js": "^3.6.5",
+    "express": "^4.17.1",
+    "pg": "^8.9.0",
+    "socket.io": "^4.1.2"
+  },
+  "scripts": {
+    "server": "node server.js",
+    "debug": "nodemon server.js"
+  },
+  "keywords": [],
+  "license": "ISC"
+}
