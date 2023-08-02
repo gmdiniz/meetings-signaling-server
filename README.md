@@ -17,14 +17,6 @@ npm install
 A ferramenta conta com dois comandos basicos para rodar localmente
 
 ```
-npm run client
-```
-
-Para subir o fronend em VUE
-
-e
-
-```
 npm run server
 ```
 
@@ -36,11 +28,9 @@ A versão atual do projeto ainda nao conta com testes de unidade
 
 ## 🛠️ Construído com
 
-- [Vue.js]
 - [Express]
 - [Socket.io]
 - [Node.js]
-- [Webrtc]
 
 ## 🖇️ Colaborando
 
