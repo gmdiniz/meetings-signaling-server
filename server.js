@@ -1,8 +1,15 @@
 const app = require('express')()
-const http = require('http').Server(app)
+const fs = require('fs')
+
+let privateKey, certificate;
+privateKey = fs.readFileSync("cert/key.pem", "utf8");
+certificate = fs.readFileSync("cert/cert.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
+
+const https = require('https').createServer(credentials, app)
 const port = process.env.PORT || 3000
 
-const io = require('socket.io')(http, {
+const io = require('socket.io')(https, {
     cors: {
         origins: ['*']
     },
@@ -10,8 +17,8 @@ const io = require('socket.io')(http, {
     pingInterval: 3000
 })
 
-http.listen(port, () => {
-    console.log(`Server is up`)
+https.listen(port, () => {
+    console.log(`Secure server is up, running on port ${port}`)
 })
 
 const index = require('./src/services/routes/index')
@@ -24,23 +31,6 @@ app.get('/meetings', meetingsRoute)
 
 var channels = {}
 var sockets = {}
-
-function part(channel, socket) {
-    console.log("["+ socket.id + "] part ");
-
-    if (!(channel in socket.channels)) {
-        console.log("["+ socket.id + "] ERROR: not in ", channel);
-        return;
-    }
-
-    delete socket.channels[channel];
-    delete channels[channel][socket.id];
-
-    for (id in channels[channel]) {
-        channels[channel][id].emit('removePeer', {'peer_id': socket.id});
-        socket.emit('removePeer', {'peer_id': id});
-    }
-}
 
 io.on('connection', (socket) => {
     socket.channels = {}
@@ -126,4 +116,19 @@ io.on('connection', (socket) => {
     })
 })
 
-module.exports = app
+function part(channel, socket) {
+    console.log("["+ socket.id + "] part ");
+
+    if (!(channel in socket.channels)) {
+        console.log("["+ socket.id + "] ERROR: not in ", channel);
+        return;
+    }
+
+    delete socket.channels[channel];
+    delete channels[channel][socket.id];
+
+    for (id in channels[channel]) {
+        channels[channel][id].emit('removePeer', {'peer_id': socket.id});
+        socket.emit('removePeer', {'peer_id': id});
+    }
+}
